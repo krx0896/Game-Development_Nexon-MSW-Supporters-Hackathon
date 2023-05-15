@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="21b55812-d29d-42e9-8422-14df7d0138eb" Language="Lua" Name="ShowUI" Type="Component" Source="None" ModifyTime="2022-08-26T00:01:12.2066359+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="InGameUI" Type="Entity" DefaultValue="c07d8c6e-555e-4a9d-a919-4a2bb1a41c6a" SyncDirection="None" />
+    <CodeBlockProperty Name="EnterInGame" Type="boolean" DefaultValue="false " SyncDirection="All" />
+    <CodeBlockProperty Name="RankUI" Type="Entity" DefaultValue="18f596b1-43d6-4cdf-ad80-633fa93de94b" SyncDirection="None" />
+    <CodeBlockProperty Name="EnterEatSongpyeon" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="ScoreUI" Type="Entity" DefaultValue="a2c1e7c6-7ff8-4cd2-89b7-9a73c8f80be2" SyncDirection="None" />
+    <CodeBlockProperty Name="HP" Type="Entity" DefaultValue="f93da849-5cc9-464f-8b19-7e5b393a1b64" SyncDirection="None" />
+    <CodeBlockProperty Name="Enterlobby" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="MatchUI" Type="Entity" DefaultValue="bc0ebe92-ccf1-408b-b12c-f21b3844c6d0" SyncDirection="None" />
+    <CodeBlockProperty Name="EnterJegi" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="SongPyeonUI" Type="Entity" DefaultValue="18f596b1-43d6-4cdf-ad80-633fa93de94b" SyncDirection="None" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnMapEnter" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="enteredMap" Type="any" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+--log(self.EnterInGame)
+if enteredMap.Name == "map01" then
+	self.Enterlobby = true  
+end 
+
+if enteredMap.Name == "mainmap" then
+	self.EnterInGame= true
+	--log(enteredMap.Name)
+	--log(self.EnterInGame)
+	--log(self.NewEnterGame)
+	self.InGameUI:SetEnable(true)
+	self.ScoreUI:SetEnable(true)
+	self.HP:SetEnable(false)
+	self.SongPyeonUI:SetEnable(false)
+	--self.MatchUI:SetEnable(false)
+elseif enteredMap.Name == "EatSongpyeon" then
+	
+	self.EnterEatSongpyeon = true
+	
+elseif enteredMap.Name == "Jegi" then
+	self.EnterJegi = true
+	self.InGameUI:SetEnable(false)
+elseif enteredMap.Name == "end" then
+	self.InGameUI:SetEnable(false)
+	self.HP:SetEnable(false)
+end
+
+log(self.EnterInGame)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnUpdate" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="delta" Type="number" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+--log(self.EnterInGame)
+
+if self.Enterlobby ==true then
+	self.HP:SetEnable(false)
+	--self.MatchUI:SetEnable(true)
+	self:Show()
+end 
+
+if self.EnterEatSongpyeon == true  then
+	log("송편먹기 게임 들어옴")
+	self.RankUI:SetEnable(true)
+	self.HP:SetEnable(true)
+	--self.InGameUI:SetEnable(false)
+	self:Hide()
+	self.ScoreUI:SetEnable(true)
+elseif self.EnterJegi == true then
+	self.RankUI:SetEnable(false)
+	self.HP:SetEnable(true)
+	--self.InGameUI:SetEnable(false)
+	self:Hide()
+	self.ScoreUI:SetEnable(true)
+end
+
+--if문이 안먹는다 어떡하지 
+if self.EnterInGame == true then
+	--log("정상")
+	
+	self.InGameUI:SetEnable(true)
+	self.ScoreUI:SetEnable(true)
+	self.HP:SetEnable(false)
+	self.MatchUI:SetVisible(false)
+end
+
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnMapLeave" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="leftMap" Type="any" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+log(leftMap.Name)
+if leftMap.Name == "EatSongpyeon" then
+	
+	self.HP:SetEnable(false)
+	self.HP:SetEnable(false)
+	self.InGameUI:SetEnable(true)
+	self.SongPyeonUI:SetEnable(false)
+	
+elseif leftMap.Name== "Jegi" then
+	self.HP:SetEnable(false)
+	self.HP:SetEnable(false)
+	self.InGameUI:SetEnable(true)
+elseif leftMap.Name == "map01" then
+	local ExplainYutGame= _EntityService:GetEntityByPath("/ui/윷놀이 게임 설명 UI")
+	ExplainYutGame:SetEnable(true)
+	wait(10)
+	ExplainYutGame:SetEnable(false)
+elseif leftMap.Name == "mainmap" then
+	log("main나감")
+	self.InGameUI:SetEnable(false)
+end
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="Show" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+self.InGameUI:SetEnable(true)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="Hide" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+self.InGameUI:SetEnable(false)
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

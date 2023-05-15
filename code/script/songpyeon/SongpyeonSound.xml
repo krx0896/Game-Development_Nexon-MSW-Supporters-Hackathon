@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="c3ce1f92-ff09-49ba-a949-e6081b7ffbe1" Language="Lua" Name="SongpyeonSound" Type="Component" Source="None" ModifyTime="2022-08-26T01:24:12.9810431+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods>
+    <CodeBlockMethod Name="sound_songpyeon" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments />
+      <Code><![CDATA[
+self.Entity.SoundComponent.AudioClipRUID = "acf88cf02c5045d0bc8d363b89186496"
+self.Entity.SoundComponent:Play()
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="sound_dong" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments />
+      <Code><![CDATA[
+self.Entity.SoundComponent.AudioClipRUID = "056272a0e89740d8a3b0b0840f3329bb"
+self.Entity.SoundComponent:Play()
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleTriggerEnterEvent2" EventName="TriggerEnterEvent" Target="model:c276896b-ff6b-4f5f-bf6d-671087ae3ece" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local TriggerBodyEntity = event.TriggerBodyEntity
+--------------------------------------------------------
+self:sound_songpyeon()
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleTriggerEnterEvent3" EventName="TriggerEnterEvent" Target="model:f281d291-3d06-47ff-ae95-b7f0e5abfdc4" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local TriggerBodyEntity = event.TriggerBodyEntity
+--------------------------------------------------------
+self:sound_songpyeon()
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleTriggerEnterEvent4" EventName="TriggerEnterEvent" Target="model:3640d0ff-9cec-497a-afa8-f92f077bde99" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local TriggerBodyEntity = event.TriggerBodyEntity
+--------------------------------------------------------
+self:sound_dong()
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

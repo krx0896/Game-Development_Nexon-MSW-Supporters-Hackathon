@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="4e05f369-c76c-417d-b9fc-bd8d20bd4a34" Language="Lua" Name="MatchStateEvent" Type="Event" Source="None" ModifyTime="2022-02-21T13:00:54.6430006+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="MatchState" Type="number" DefaultValue="0" SyncDirection="All" />
+  </Properties>
+  <Methods />
+  <EntityEventHandlers />
+</CodeBlockFile>

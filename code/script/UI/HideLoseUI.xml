@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="db151982-1df7-46c9-99aa-2fb1d7045e2d" Language="Lua" Name="HideLoseUI" Type="Component" Source="None" ModifyTime="2022-08-23T10:42:22.0465834+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods />
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleButtonClickEvent" EventName="ButtonClickEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local Entity = event.Entity
+--------------------------------------------------------
+local HideLoseUI = _EntityService:GetEntityByPath("/ui/LoseUI")
+HideLoseUI:SetEnable(false)
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

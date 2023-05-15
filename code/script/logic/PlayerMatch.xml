@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="fd2ce09f-69d3-4c5d-8b15-a6b153f9bd26" Language="Lua" Name="PlayerMatch" Type="Component" Source="None" ModifyTime="2022-02-22T07:48:19.6224195+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="isReady" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="readyClickTime" Type="number" DefaultValue="0" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="SetReady" ExecSpace="Server">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="ready" Type="boolean" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+self.isReady = ready
+self.readyClickTime = _UtilLogic.ServerElapsedSeconds
+_MatchLogic:SetReady(self.Entity,ready)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnDestroy" ExecSpace="ServerOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+if _InstanceMapService:IsInstance() == false then
+	self:SetReady(false)
+end
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

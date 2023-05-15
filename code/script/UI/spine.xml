@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="a5c0ab96-5a7f-467e-9df0-c5179c82f8bf" Language="Lua" Name="spine" Type="Component" Source="None" ModifyTime="2022-08-26T02:15:32.7468389+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="button" Type="Entity" DefaultValue="7e3ae93a-69c0-4887-b61c-41635241f0ac" SyncDirection="None" />
+    <CodeBlockProperty Name="roulette" Type="Entity" DefaultValue="9fc369e3-5d72-4942-8b1b-7f6f7d085153" SyncDirection="None" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="Onspine" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="arg1" Type="Entity" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+self.Entity.TweenCircularComponent:Play()
+self.Entity.TweenCircularComponent.Degree = math.random(800, 2000)
+return
+
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="hide" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local RouletteUI = _EntityService:GetEntityByPath("/ui/룰렛UI")
+RouletteUI:SetEnable(false)
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleButtonClickEvent" EventName="ButtonClickEvent" Target="entity:7e3ae93a-69c0-4887-b61c-41635241f0ac" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local Entity = event.Entity
+--------------------------------------------------------
+self:Onspine(self.roulette)
+wait(23)
+self:hide()
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="aa3d222a-6a7b-4339-8de2-e0bde5914c21" Language="Lua" Name="PieceComponent" Type="Component" Source="None" ModifyTime="2022-08-26T02:31:59.904524+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="currentPosition" Type="number" DefaultValue="0" SyncDirection="All" />
+    <CodeBlockProperty Name="pieceNumber" Type="number" DefaultValue="-1" SyncDirection="All" />
+    <CodeBlockProperty Name="originPos" Type="Vector2" DefaultValue="Vector2(0,0)" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ServerOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+self.originPos = Vector2(self.Entity.TransformComponent.Position.x, self.Entity.TransformComponent.Position.y)
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

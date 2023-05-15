@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="dcf0a47d-f59c-4ec9-836c-82825e35cd56" Language="Lua" Name="JegiBounce" Type="Component" Source="None" ModifyTime="2022-08-26T02:52:04.5221826+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="JegiTransform" Type="Component" DefaultValue="nil" SyncDirection="All" />
+    <CodeBlockProperty Name="PlayerTransform" Type="Component" DefaultValue="nil" SyncDirection="All" />
+    <CodeBlockProperty Name="JegiRigidbody" Type="Component" DefaultValue="nil" SyncDirection="All" />
+    <CodeBlockProperty Name="IsHit" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="stateComponent" Type="any" DefaultValue="nil" SyncDirection="None" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+
+local taxi = _EntityService:GetEntityByPath("/maps/Jegi/npc-4")
+local jegi = self.Entity
+local player = _UserService.LocalPlayer
+--local player = _EntityService:GetEntityByPath("Player")
+
+self.PlayerTransform = taxi.TransformComponent
+self.PlayerTransform = player.TransformComponent
+self.JegiTransform = jegi.TransformComponent
+self.JegiRigidbody = jegi.RigidbodyComponent
+
+--HitJegi 애니메이션
+self.stateComponent = self.Entity.StateComponent
+self.stateComponent:AddState("HitJegi")
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="Animate" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="key" Type="number" DefaultValue="0" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+if key == 6 then
+	self.stateComponent:ChangeState("HitJegi")
+end
+ 
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleTriggerEnterEvent" EventName="TriggerEnterEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local TriggerBodyEntity = event.TriggerBodyEntity
+--------------------------------------------------------
+_EntityService:GetEntityByPath("/maps/Jegi/Jegi").RigidbodyComponent:SetForce(Vector2(math.random(-1,1),6))
+--_UserService.LocalPlayer.AvatarStateAnimationComponent.ActionSheet.Values
+
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleKeyDownEvent" EventName="KeyDownEvent" Target="service:InputService" Scope="Server">
+      <Code><![CDATA[
+-- Parameters
+local key = event.key
+--------------------------------------------------------
+--HitJegi 애니메이션
+if key == KeyboardKey.Alpha6 then
+	self:Animate(6)
+end
+
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

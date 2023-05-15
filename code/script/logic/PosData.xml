@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="ee4bf4f6-bc82-4168-ba60-e7849916071e" Language="Lua" Name="PosData" Type="Logic" Source="None" ModifyTime="2022-08-26T01:42:29.1675879+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="first" Type="number" DefaultValue="0" SyncDirection="All" />
+    <CodeBlockProperty Name="second" Type="number" DefaultValue="0" SyncDirection="All" />
+    <CodeBlockProperty Name="third" Type="number" DefaultValue="0" SyncDirection="All" />
+  </Properties>
+  <Methods />
+  <EntityEventHandlers />
+</CodeBlockFile>

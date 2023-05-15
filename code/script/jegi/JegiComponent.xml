@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="dce66262-eeb5-44ba-922e-94d000889084" Language="Lua" Name="JegiComponent" Type="Component" Source="None" ModifyTime="2022-08-26T01:46:47.4655956+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+
+local jegiPath = _EntityService:GetEntityByPath("/maps/Jegi/Jegi")
+jegiPath.RigidbodyComponent.Enable = false
+ScoreComponent.score = 0
+
+local HideEatSongpyeonUI = _EntityService:GetEntityByPath("/ui/EatSongpyeonUI")
+HideEatSongpyeonUI:SetEnable(false)
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleFootholdEnterEvent" EventName="FootholdEnterEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local Entity = event.Entity
+local Foothold = event.Foothold
+--------------------------------------------------------
+local PopupLoseUI = _EntityService:GetEntityByPath("/ui/LoseUI")
+PopupLoseUI:SetEnable(true)
+local HideJegiUI = _EntityService:GetEntityByPath("/ui/JegiUI")
+HideJegiUI:SetEnable(false)
+local jegiPath = _EntityService:GetEntityByPath("/maps/Jegi/Jegi")
+jegiPath.RigidbodyComponent.Enable = false
+
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleTriggerEnterEvent" EventName="TriggerEnterEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local TriggerBodyEntity = event.TriggerBodyEntity
+--------------------------------------------------------
+
+ScoreComponent.score = ScoreComponent.score + 1
+
+if ScoreComponent.score == 3 then
+	local PopupWinUI = _EntityService:GetEntityByPath("/ui/WinUI")
+	PopupWinUI:SetEnable(true)
+	local HideJegiUI = _EntityService:GetEntityByPath("/ui/JegiUI")
+	HideJegiUI:SetEnable(false)
+	
+	_ScoreData.minigameWins = _ScoreData.minigameWins + 1
+	_EntityService:GetEntityByPath("/ui/점수판 UI/UIText_2").TextComponent.Text = tostring(math.floor(_ScoreData.yutWins * 2 + _ScoreData.minigameWins))
+	local jegiPath = _EntityService:GetEntityByPath("/maps/Jegi/Jegi")
+	--jegiPath.TransformComponent.Position.y = -1.5
+end
+
+
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleEntityMapChangedEvent" EventName="EntityMapChangedEvent" Target="localPlayer" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local NewMap = event.NewMap
+local OldMap = event.OldMap
+local Entity = event.Entity
+--------------------------------------------------------
+
+if NewMap.Name == "Jegi" then
+	local jegiPath = _EntityService:GetEntityByPath("/maps/Jegi/Jegi")
+	jegiPath.RigidbodyComponent.Enable = false
+	ScoreComponent.score = 0
+end
+
+
+if OldMap.Name == "Jegi" then
+	local HideJegiUI = _EntityService:GetEntityByPath("/ui/JegiUI")
+	HideJegiUI:SetEnable(false)
+	local HideJegiClickUI = _EntityService:GetEntityByPath("/ui/JegiClickUI")
+	HideJegiClickUI:SetEnable(false)
+end
+
+if OldMap.Name == "mainmap" then
+	local HideEatSongpyeonUI = _EntityService:GetEntityByPath("/ui/EatSongpyeonUI")
+	HideEatSongpyeonUI:SetEnable(false)
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="67f35b3c-89b5-482e-99a8-0312b4bec204" Language="Lua" Name="YutMainLogic" Type="Logic" Source="None" ModifyTime="2022-08-26T03:07:04.983302+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="endGameFlag" Type="boolean" DefaultValue="true" SyncDirection="All" />
+    <CodeBlockProperty Name="player" Type="Entity" DefaultValue="nil" SyncDirection="All" />
+    <CodeBlockProperty Name="canPushThrowButton" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="selectedPiece" Type="Component" DefaultValue=":PieceComponent" SyncDirection="All" />
+    <CodeBlockProperty Name="pieces" Type="array" DefaultValue="PieceComponent" SyncDirection="All" />
+    <CodeBlockProperty Name="canPieceSelected" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="firstPiece" Type="Component" DefaultValue="e85c954b-bd45-48ce-bfb1-98181a014863:PieceComponent" SyncDirection="All" />
+    <CodeBlockProperty Name="secondPiece" Type="Component" DefaultValue="7afa85ff-d3fb-49e8-b310-a50e5ba3eea1:PieceComponent" SyncDirection="All" />
+    <CodeBlockProperty Name="thirdPiece" Type="Component" DefaultValue="58d627c9-fcb4-4b62-a6f3-1dacbf6be476:PieceComponent" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ServerOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments />
+      <Code><![CDATA[
+--self:InitiateGame(_UserService.LocalPlayer)
+-- 말 pieces에 추가
+
+self:CallOnClient()
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="InitiateGame" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="player" Type="Entity" DefaultValue="nil" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+-- Test OK
+
+self.player = player
+self.endGameFlag = false
+-- 말 pieces에 추가
+
+self:SetPieces()
+
+self.canPushThrowButton = true
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="ClearGame" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments />
+      <Code><![CDATA[
+log("clear game called")
+
+self.player = nil
+self.endGameFlag = true
+self.canPushThrowButton = false
+self.canPieceSelected = false
+for k, v in pairs(self.pieces) do
+	v.currentPosition = 0
+	table.remove(self.pieces, k)
+	
+	-- 말 위치 초기화
+end
+
+self.endGameFlag = true
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="IsWin" ExecSpace="All">
+      <Return Type="boolean" DefaultValue="false" SyncDirection="None" />
+      <Arguments />
+      <Code><![CDATA[
+log("in isWin")
+
+return #self.pieces <= 0
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="SetPieces" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local piece1 = _EntityService:GetEntityByPath("/maps/mainmap/PieceModel")
+local piece2 = _EntityService:GetEntityByPath("/maps/mainmap/PieceModel_1")
+local piece3 = _EntityService:GetEntityByPath("/maps/mainmap/PieceModel_2")
+
+
+piece1.PieceComponent.pieceNumber = 1
+piece2.PieceComponent.pieceNumber = 2
+piece3.PieceComponent.pieceNumber = 3
+
+if _PosData.first <= 20 then
+	table.insert(self.pieces, piece1.PieceComponent)
+end
+
+if _PosData.second <= 20 then
+	table.insert(self.pieces, piece2.PieceComponent)
+end
+
+if _PosData.third <= 20 then
+	table.insert(self.pieces, piece3.PieceComponent)
+end
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="CallOnClient" ExecSpace="Client">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+_UserService.LocalPlayer.RigidbodyComponent.IsQuaterViewMove = false
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleEntityMapChangedEvent" EventName="EntityMapChangedEvent" Target="localPlayer" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local NewMap = event.NewMap
+local OldMap = event.OldMap
+local Entity = event.Entity
+--------------------------------------------------------
+if NewMap.Name == "mainmap" then
+	
+	_UserService.LocalPlayer.RigidbodyComponent.IsQuaterViewMove = true
+	
+	_EntityService:GetEntityByPath("/ui/윷놀이맵 UI"):SetVisible(true)
+	_EntityService:GetEntityByPath("/ui/윷놀이맵 UI"):SetEnable(true)
+	
+	
+	log(OldMap.Name .. "to main")
+	
+
+		
+		
+		
+
+		
+		
+	
+	
+	
+	
+
+	
+	if self.endGameFlag == true then
+		log("endgameflag is true")
+		self:InitiateGame(Entity)
+	end
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleEntityMapChangedEvent2" EventName="EntityMapChangedEvent" Target="localPlayer" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local NewMap = event.NewMap
+local OldMap = event.OldMap
+local Entity = event.Entity
+--------------------------------------------------------
+if OldMap.Name == "mainmap" then
+	
+	log("main to " .. NewMap.Name)
+	
+	
+	
+	_EntityService:GetEntityByPath("/ui/윷놀이맵EndGameUI"):SetVisible(false, true)
+	_EntityService:GetEntityByPath("/ui/윷놀이맵EndGameUI"):SetEnable(false, true)
+	
+	_EntityService:GetEntityByPath("/ui/윷놀이맵 UI"):SetVisible(false)
+	_EntityService:GetEntityByPath("/ui/윷놀이맵 UI"):SetEnable(false)
+	_UserService.LocalPlayer.RigidbodyComponent.IsQuaterViewMove = false
+	if _YutMainLogic.endGameFlag == true then
+		self:ClearGame()
+	end
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleKeyDownEvent" EventName="KeyDownEvent" Target="service:InputService" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local key = event.key
+--------------------------------------------------------
+if key == KeyboardKey.P then
+	log("---------------- debug info ---------------------")
+	
+	log("3. posData info")
+	log("firstPos " .. tostring(_PosData.first))
+	log("secondPos " .. tostring(_PosData.second))
+	log("thirdPos " .. tostring(_PosData.third))
+	
+	
+	log("1. piece info")
+	for k, v in pairs(self.pieces) do
+		log("piece number " .. tostring(v.pieceNumber) .. " piece position " .. tostring(v.currentPosition))
+		log("entity info - isEnabled " .. tostring(v.Entity.Enable))
+	end
+	
+	log("2. variable info")
+	log("canPieceSelected " .. tostring(self.canPieceSelected))
+	log("canPushThrow " .. tostring(self.canPushThrowButton))
+	log("selectedPiece" .. tostring(self.selectedPiece.Entity.Name))
+	
+	
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

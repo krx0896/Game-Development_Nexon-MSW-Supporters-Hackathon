@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="4717a1ec-2518-4f21-aab4-7cf71c7893f3" Language="Lua" Name="EndGame" Type="Component" Source="None" ModifyTime="2022-08-26T00:29:01.9320666+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="Message" Type="Entity" DefaultValue="f399d192-f216-48ba-b63a-eecc2302d474" SyncDirection="None" />
+  </Properties>
+  <Methods />
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleButtonClickEvent" EventName="ButtonClickEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local Entity = event.Entity
+log("게밈종료 버튼 클릭")
+--------------------------------------------------------
+local Yut= _EntityService:GetEntityByPath("/ui/윷놀이맵EndGameUI")
+
+--Yut:SetEnable(true)
+--wait(4)
+--Yut:SetEnable(false)
+ 
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

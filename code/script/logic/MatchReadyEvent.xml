@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="1223e51b-ce37-473d-af8a-40121f69ffa0" Language="Lua" Name="MatchReadyEvent" Type="Event" Source="None" ModifyTime="2022-02-21T13:00:42.6670303+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="PlayerId" Type="string" DefaultValue="&quot;&quot;" SyncDirection="All" />
+    <CodeBlockProperty Name="IsReady" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="PlayerCount" Type="number" DefaultValue="0" SyncDirection="All" />
+    <CodeBlockProperty Name="MatchState" Type="number" DefaultValue="0" SyncDirection="All" />
+  </Properties>
+  <Methods />
+  <EntityEventHandlers />
+</CodeBlockFile>

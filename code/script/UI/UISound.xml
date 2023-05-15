@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="60b69545-b663-4290-8d6f-43151783f7d3" Language="Lua" Name="UISound" Type="Component" Source="None" ModifyTime="2022-08-26T01:26:15.2860374+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods>
+    <CodeBlockMethod Name="sound" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments />
+      <Code><![CDATA[
+self.Entity.SoundComponent:Play()
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleButtonClickEvent" EventName="ButtonClickEvent" Target="entity:08981b79-5b0a-4d6d-9199-7d6dcbc93dca" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local Entity = event.Entity
+--------------------------------------------------------
+self:sound()
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleButtonClickEvent2" EventName="ButtonClickEvent" Target="entity:229bb7c1-1c5d-4e12-9c4e-9d048aa50fff" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local Entity = event.Entity
+--------------------------------------------------------
+self:sound()
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

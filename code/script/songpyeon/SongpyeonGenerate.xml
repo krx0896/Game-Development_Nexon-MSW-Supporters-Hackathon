@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="16ba17a6-f26a-4a7f-ad46-aa08c84dee4e" Language="Lua" Name="SongpyeonGenerate" Type="Logic" Source="None" ModifyTime="2022-08-25T23:10:22.7059893+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="time" Type="number" DefaultValue="0" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnUpdate" ExecSpace="ServerOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="delta" Type="number" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+self.time = self.time + delta
+if self.time > 1.1 then
+	local randomNum = math.random(-4,5)
+	_SpawnService:SpawnByModelId("model://f281d291-3d06-47ff-ae95-b7f0e5abfdc4","Songpyeon",Vector3(randomNum,3,0),_EntityService:GetEntity("c249ba4d-251e-4178-a6f5-1693a731a156"))
+	self.time = 0
+end
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

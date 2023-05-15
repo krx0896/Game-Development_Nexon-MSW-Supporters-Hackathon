@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="7f4d00cb-49d9-4088-b76d-3d987ee7c63d" Language="Lua" Name="UICloseComponent" Type="Component" Source="None" ModifyTime="2022-08-26T00:07:55.634866+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods />
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleTouchEvent" EventName="TouchEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+--------------------------------------------------------
+log("touched")
+
+
+_EntityService:GetEntityByPath("/ui/미니게임안내UI"):SetVisible(false)
+_EntityService:GetEntityByPath("/ui/미니게임안내UI"):SetEnable(false)
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="24c24428-b659-48a8-abd3-11c302b1ac25" Language="Lua" Name="DongComponent" Type="Component" Source="None" ModifyTime="2022-08-24T11:44:42.8796481+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods>
+    <CodeBlockMethod Name="hitDong" ExecSpace="Server">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="TriggerBodyEntity" Type="Entity" SyncDirection="None" />
+        <CodeBlockProperty Name="hit" Type="number" DefaultValue="0" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+TriggerBodyEntity.HitComponent:OnHit(self.Entity, hit, false, "똥 맞음", 1)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="deleteDong" ExecSpace="Server">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments />
+      <Code><![CDATA[
+self.Entity:Destroy()
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleTriggerEnterEvent" EventName="TriggerEnterEvent" Target="self" Scope="Client">
+      <Code><![CDATA[
+-- Parameters
+local TriggerBodyEntity = event.TriggerBodyEntity
+--------------------------------------------------------
+if TriggerBodyEntity.StateComponent.CurrentStateName ~= "DEAD" then
+	self:hitDong(TriggerBodyEntity, 350)
+	for key, value in pairs(_UserService.UserEntities) do
+		value.ScoreComponent.score = value.ScoreComponent.score - 0
+	end
+	self:deleteDong()
+end
+
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleFootholdEnterEvent" EventName="FootholdEnterEvent" Target="self" Scope="Client">
+      <Code><![CDATA[
+-- Parameters
+local Entity = event.Entity
+local Foothold = event.Foothold
+--------------------------------------------------------
+self:deleteDong()
+
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="60efa556-68e0-44db-98d0-5b94e0f1d37b" Language="Lua" Name="JegiClickUIComponent" Type="Component" Source="None" ModifyTime="2022-08-26T00:31:41.0677041+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods />
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleButtonClickEvent" EventName="ButtonClickEvent" Target="entity:b64c3da6-4b5a-4fab-8c95-f42b97472630" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local Entity = event.Entity
+local jegiPath = _EntityService:GetEntityByPath("/maps/Jegi/Jegi")
+--local dropItem = function()
+	--jegiPath.RigidbodyComponent.Enable = true
+--end
+--------------------------------------------------------
+--_TimerService:SetTimer(self, dropItem, 3, false)
+
+jegiPath.RigidbodyComponent.Enable = true
+local HideJegiClickUI = _EntityService:GetEntityByPath("/ui/JegiClickUI")
+HideJegiClickUI:SetEnable(false)
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

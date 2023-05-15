@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="41520014-042e-4c73-9bcf-0f79ac0dc769" Language="Lua" Name="MatchLogEvent" Type="Event" Source="None" ModifyTime="2022-02-21T13:00:05.2630657+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="Log" Type="string" DefaultValue="&quot;&quot;" SyncDirection="All" />
+  </Properties>
+  <Methods />
+  <EntityEventHandlers />
+</CodeBlockFile>

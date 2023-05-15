@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="467d3c2d-9ee8-4581-b1df-c429c7873adb" Language="Lua" Name="SongpyeonUI" Type="Component" Source="None" ModifyTime="2022-08-26T00:23:07.3779604+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="show" Type="boolean" DefaultValue="false" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+self:UI()
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="UI" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+log("송편UI")
+local HideUI = _EntityService:GetEntityByPath("/ui/윷놀이맵 UI")
+
+HideUI:SetEnable(false)
+
+local ShowUI = _EntityService:GetEntityByPath("/ui/EatSongpyeonUI")
+ShowUI:SetEnable(true)
+wait(2)
+
+ShowUI:SetEnable(false)
+
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

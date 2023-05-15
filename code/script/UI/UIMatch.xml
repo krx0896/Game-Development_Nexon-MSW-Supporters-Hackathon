@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="a6a84505-c476-4922-9ded-27dfc90ba387" Language="Lua" Name="UIMatch" Type="Component" Source="None" ModifyTime="2022-02-21T13:32:19.752909+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="textMatchInfo" Type="Component" DefaultValue="dba8152b-01cf-4f32-a952-091400d07cf2:52" SyncDirection="None" />
+    <CodeBlockProperty Name="textWaitInfo" Type="Component" DefaultValue="568c68e0-1d07-4145-93e7-630e0f23b573:52" SyncDirection="None" />
+    <CodeBlockProperty Name="textMatchLog" Type="Component" DefaultValue="538f763c-c074-45c7-b291-e4d6a81f4fcd:52" SyncDirection="None" />
+    <CodeBlockProperty Name="matchButton" Type="Entity" DefaultValue="f1b30674-005d-4d57-981f-23449ccff62f" SyncDirection="None" />
+    <CodeBlockProperty Name="matchCancelButton" Type="Entity" DefaultValue="dc31d419-f937-4858-b0fb-b0221dd70ce6" SyncDirection="None" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments />
+      <Code><![CDATA[
+if _InstanceMapService:IsInstance() then
+	self.Entity.Enable = false
+	return
+end
+
+self._T.textMatchInfoText = self.textMatchInfo.Text
+self._T.textWaitInfoText = self.textWaitInfo.Text
+local textMatchInfo = ""
+if _MatchLogic.minPlayerCnt == _MatchLogic.maxPlayerCnt then
+	if _MatchLogic.minPlayerCnt > 0 then
+		textMatchInfo = string.format("(%d인)", _MatchLogic.minPlayerCnt)
+	end
+else
+	textMatchInfo = string.format("(%d ~ %d인)", _MatchLogic.minPlayerCnt,_MatchLogic.maxPlayerCnt)
+end
+self.textMatchInfo.Text = string.format(self._T.textMatchInfoText,textMatchInfo)
+self._T.IsReadyWaiting = false
+
+self._T.onClickMatchButton = self.matchButton:ConnectEvent(ButtonClickEvent,function()self:OnClickReadyBtn(true)end)
+self._T.onClickMatchCancelButton = self.matchCancelButton:ConnectEvent(ButtonClickEvent,function()self:OnClickReadyBtn(false)end)
+self.textMatchLog.Text = ""
+self.textMatchLog.Enable = false
+self.Entity.Enable = not _MatchLogic.isEventMatchType
+
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnClickReadyBtn" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="ready" Type="boolean" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+if self._T.IsReadyWaiting == true then
+	--서버 응답 대기중입니다
+	return
+end
+self._T.IsReadyWaiting = true
+_UserService.LocalPlayer.PlayerMatch:SetReady(ready)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnResultReady" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="ready" Type="boolean" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+self._T.IsReadyWaiting = false
+self.matchButton.Enable = not ready
+self.matchCancelButton.Enable = ready
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnEndPlay" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+if _InstanceMapService:IsInstance() then
+	return
+end
+self.matchButton:DisconnectEvent(ButtonClickEvent,self._T.onClickMatchButton)
+self.matchCancelButton:DisconnectEvent(ButtonClickEvent,self._T.onClickMatchCancelButton)
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleMatchJoin" EventName="MatchReadyEvent" Target="logic:MatchLogic" Scope="Client">
+      <Code><![CDATA[
+-- Parameters
+local playerId = event.PlayerId
+local isReady = event.IsReady
+local playerCnt = event.PlayerCount
+local matchState = event.MatchState
+--------------------------------------------------------
+if _UserService.LocalPlayer.PlayerComponent.UserId == playerId then
+	self:OnResultReady(isReady)
+end
+self.textWaitInfo.Text = string.format(self._T.textWaitInfoText, playerCnt)
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleMatchLog" EventName="MatchLogEvent" Target="logic:MatchLogic" Scope="Client">
+      <Code><![CDATA[
+-- Parameters
+local log = event.Log
+--------------------------------------------------------
+self.textMatchLog.Text = log
+self.textMatchLog.Enable = not _UtilLogic:IsNilorEmptyString(log)
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleMatchState" EventName="MatchStateEvent" Target="logic:MatchLogic" Scope="Client">
+      <Code><![CDATA[
+-- Parameters
+local matchState = event.MatchState
+--------------------------------------------------------
+if _MatchLogic.isEventMatchType then
+	if matchState == _MatchEnum.NONE then	
+		self:OnClickReadyBtn(false)
+		self.Entity.Enable = false
+	elseif matchState == _MatchEnum.WAIT then
+		self.Entity.Enable = true
+	end
+end
+
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

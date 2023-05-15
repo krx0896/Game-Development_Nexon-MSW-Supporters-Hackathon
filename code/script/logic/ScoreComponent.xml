@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="ac481b67-48d1-476b-93ca-98c5ca072ae3" Language="Lua" Name="ScoreComponent" Type="Component" Source="None" ModifyTime="2022-08-26T01:24:19.0956027+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="score" Type="number" DefaultValue="0" SyncDirection="All" />
+    <CodeBlockProperty Name="bestScore" Type="number" DefaultValue="0" SyncDirection="All" />
+  </Properties>
+  <Methods />
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleDeadEvent" EventName="DeadEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+--------------------------------------------------------
+if self.score > self.bestScore then
+	self.bestScore = self.score
+end
+
+local HideEatSongpyeonUI = _EntityService:GetEntityByPath("/ui/EatSongpyeonUI")
+local PopupLoseUI = _EntityService:GetEntityByPath("/ui/LoseUI")
+
+HideEatSongpyeonUI:SetEnable(false)
+PopupLoseUI:SetEnable(true)
+
+_UserService.LocalPlayer.PlayerComponent.Hp = 1000000
+self.score = 100000
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleReviveEvent" EventName="ReviveEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local TriggerBodyEntity = event.TriggerBodyEntity
+--------------------------------------------------------
+
+_UserService.LocalPlayer.PlayerComponent.Hp = 100000
+self.score = 100000
+
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

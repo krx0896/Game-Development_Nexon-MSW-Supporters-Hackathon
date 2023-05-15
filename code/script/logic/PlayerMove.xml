@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="6227c6ed-e18e-460d-95e5-97ab03dba62b" Language="Lua" Name="PlayerMove" Type="Component" Source="None" ModifyTime="2022-08-26T00:41:31.7703454+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="EndButton" Type="Entity" DefaultValue="0df010e8-2498-4a2b-891c-99e22eb357e7" SyncDirection="None" />
+  </Properties>
+  <Methods />
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleButtonClickEvent" EventName="ButtonClickEvent" Target="entity:0df010e8-2498-4a2b-891c-99e22eb357e7" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local Entity = event.Entity
+--------------------------------------------------------
+local HideUI= _EntityService:GetEntityByPath("/ui/윷놀이맵EndGameUI")
+local MoveUI= _EntityService:GetEntityByPath("/ui/로비로 이동합니다.")
+HideUI:SetEnable(false)
+MoveUI:SetEnable(true)
+wait(5)
+MoveUI:SetEnable(false)
+self.Entity.PlayerComponent:MoveToMapPosition('end',Vector2(2,2)) 
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

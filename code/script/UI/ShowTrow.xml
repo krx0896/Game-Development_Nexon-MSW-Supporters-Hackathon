@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="0920b547-a4d2-4437-909c-bfb5f96fbfc0" Language="Lua" Name="ShowTrow" Type="Component" Source="None" ModifyTime="2022-08-25T23:52:46.5657894+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="Red_button" Type="Entity" DefaultValue="08981b79-5b0a-4d6d-9199-7d6dcbc93dca" SyncDirection="None" />
+    <CodeBlockProperty Name="Blue_button" Type="Entity" DefaultValue="229bb7c1-1c5d-4e12-9c4e-9d048aa50fff" SyncDirection="None" />
+    <CodeBlockProperty Name="RedTeam" Type="boolean" DefaultValue="true --차례를 보여줄 변수" SyncDirection="All" />
+    <CodeBlockProperty Name="BlueTeam" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="UIgroup" Type="Entity" DefaultValue="c07d8c6e-555e-4a9d-a919-4a2bb1a41c6a" SyncDirection="None" />
+    <CodeBlockProperty Name="taskID" Type="number" DefaultValue="0" SyncDirection="All" />
+    <CodeBlockProperty Name="Num" Type="number" DefaultValue="0" SyncDirection="All" />
+    <CodeBlockProperty Name="selectionUI" Type="Entity" DefaultValue="bc7f8d37-9aa2-4119-a365-bf6e634d5e94" SyncDirection="None" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnMapEnter" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="enteredMap" Type="any" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+ 
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleButtonClickEvent" EventName="ButtonClickEvent" Target="entity:08981b79-5b0a-4d6d-9199-7d6dcbc93dca" Scope="Client">
+      <Code><![CDATA[
+-- 홍팀 윷던지기 버튼 클릭
+ 
+if _YutMainLogic.canPushThrowButton == true then
+	_YutMainLogic.canPushThrowButton = false
+	
+	local num = math.random(1,5)
+	self.Num = num
+	log("던진 숫자" .. tostring(self.Num))
+	
+	--결과UI보여주기
+	local ResultUI = _EntityService:GetEntityByPath("/ui/도개걸윷모")
+	local Text = _EntityService:GetEntityByPath("/ui/도개걸윷모/Mo/UISprite_1")
+
+	if self.Num == 1 then
+		Text.TextComponent.Text = "도"
+	elseif self.Num == 2 then
+		Text.TextComponent.Text = "개"
+	elseif self.Num == 3 then
+		Text.TextComponent.Text = "걸"
+	elseif self.Num == 4 then
+		Text.TextComponent.Text = "윷"
+	elseif self.Num == 5 then
+		Text.TextComponent.Text = "모"
+	end
+	
+	ResultUI:SetEnable(true)
+	wait(1.5)
+	ResultUI:SetEnable(false)
+	
+	_YutMainLogic.canPieceSelected = true
+	
+	self.Red_button:SetVisible(false)
+	self.Red_button:SetEnable(false)
+	
+	self.Blue_button:SetEnable(true)
+	self.Blue_button:SetVisible(true)
+	
+	_ThrowLogic:Throw(self.Num)
+	
+	--버튼바뀌기 
+
+end
+
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleButtonClickEvent2" EventName="ButtonClickEvent" Target="entity:229bb7c1-1c5d-4e12-9c4e-9d048aa50fff" Scope="Client">
+      <Code><![CDATA[
+-- 청팀 윷던지기 버튼 클릭
+
+if _YutMainLogic.canPushThrowButton == true then 
+	_YutMainLogic.canPushThrowButton = false
+	
+	local num = math.random(1,5)
+	self.Num = num
+	log(self.Num)
+	
+	--log("청팀:"+self.num)
+	--결과UI보여주기
+	local ResultUI = _EntityService:GetEntityByPath("/ui/도개걸윷모")
+	local Text = _EntityService:GetEntityByPath("/ui/도개걸윷모/Mo/UISprite_1")
+
+	if self.Num == 1 then
+		Text.TextComponent.Text = "도"
+	elseif self.Num == 2 then
+		Text.TextComponent.Text = "개"
+	elseif self.Num == 3 then
+		Text.TextComponent.Text = "걸"
+	elseif self.Num == 4 then
+		Text.TextComponent.Text = "윷"
+	elseif self.Num == 5 then
+		Text.TextComponent.Text = "모"
+	end
+	
+	ResultUI:SetEnable(true)
+	wait(1.5)
+	ResultUI:SetEnable(false)
+	
+	_YutMainLogic.canPieceSelected = true
+	
+	self.Blue_button:SetVisible(false)
+	self.Blue_button:SetEnable(false)
+	
+	self.Red_button:SetEnable(true)
+	self.Red_button:SetVisible(true)
+	
+	_ThrowLogic:Throw(self.Num)
+	
+	--버튼바뀌기 
+end
+	
+
+
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="952946e9-f9ff-4d2c-bd7d-202250f7bec1" Language="Lua" Name="ThrowLogic" Type="Logic" Source="None" ModifyTime="2022-08-26T03:13:12.7504612+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="taskID" Type="number" DefaultValue="0" SyncDirection="All" />
+    <CodeBlockProperty Name="selectionUI" Type="Entity" DefaultValue="bc7f8d37-9aa2-4119-a365-bf6e634d5e94" SyncDirection="None" />
+    <CodeBlockProperty Name="UITaskID" Type="number" DefaultValue="0" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="Throw" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="num" Type="number" DefaultValue="0" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+log("throw called")
+
+local lim = 3
+
+local func = function()
+	if _YutMainLogic.selectedPiece ~= nil or lim <= 0 then
+		_TimerService:ClearTimer(self.taskID)	
+		self.selectionUI:SetEnable(false)
+		self:Move(num) 
+	else
+		log(tostring(_YutMainLogic.canPieceSelected))
+		lim = lim - 0.1
+		log(lim)
+	end
+end
+
+self.taskID = _TimerService:SetTimerRepeat(func, 0.1)
+
+self.selectionUI:SetEnable(true)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="Move" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="num" Type="number" DefaultValue="0" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+log("in move")
+
+if _YutMainLogic.selectedPiece == nil then
+	_YutMainLogic.selectedPiece = _YutMainLogic.pieces[1]
+end
+
+log(_YutMainLogic.selectedPiece.Entity.Name)
+
+-- 데이터베이스 불러오기
+
+local dataset = _DataService:GetTable("CoordData")
+
+-- 들어왔는지 확인
+local goalFlag = false
+
+for i = _YutMainLogic.selectedPiece.currentPosition, _YutMainLogic.selectedPiece.currentPosition + num, 1 do
+	
+	if i > 20 then
+		goalFlag = true
+		break
+	end
+	
+	local row = dataset:FindRow("posID", tostring(i))
+	local x = row:GetItem("posX")
+	local y = row:GetItem("posY")
+	local vec = Vector2(tonumber(x), tonumber(y))
+	
+	log("vec: " .. tostring(x) .. " " .. tostring(y))
+	
+	_YutMainLogic.selectedPiece.Entity.MovementComponent:SetWorldPosition(vec)
+	wait(0.1)
+end 
+
+_YutMainLogic.selectedPiece.currentPosition = _YutMainLogic.selectedPiece.currentPosition + num
+
+if _YutMainLogic.selectedPiece.pieceNumber == 1 then
+	_PosData.first = _YutMainLogic.selectedPiece.currentPosition
+elseif _YutMainLogic.selectedPiece.pieceNumber == 2 then
+	_PosData.second = _YutMainLogic.selectedPiece.currentPosition
+elseif _YutMainLogic.selectedPiece.pieceNumber == 3 then
+	_PosData.third = _YutMainLogic.selectedPiece.currentPosition
+end
+
+if _YutMainLogic.selectedPiece.currentPosition == 5 or _YutMainLogic.selectedPiece.currentPosition == 10 then
+	
+	
+	_EntityService:GetEntityByPath("/ui/미니게임안내UI"):SetEnable(true)
+	wait(2)
+	_EntityService:GetEntityByPath("/ui/미니게임안내UI"):SetEnable(false, true)
+end
+
+if goalFlag == true then
+	for k, v in pairs(_YutMainLogic.pieces) do
+		if v.pieceNumber == _YutMainLogic.selectedPiece.pieceNumber then
+			table.remove(_YutMainLogic.pieces, k)
+		end
+	end
+	
+	log("남은 말 개수" .. tostring(#_YutMainLogic.pieces))
+	
+	_ScoreData.yutWins = _ScoreData.yutWins + 1
+	
+	log(_ScoreData.yutWins)
+	
+	local minigameWinCount = _ScoreData.minigameWins
+	local yutWinCount = _ScoreData.yutWins
+	
+	_EntityService:GetEntityByPath("/ui/점수판 UI/UIText_2").TextComponent.Text = tostring(math.floor(minigameWinCount + 2 * yutWinCount))
+	
+	_YutMainLogic.selectedPiece.Entity:SetVisible(false)
+end
+
+_YutMainLogic.selectedPiece = nil
+
+if _YutMainLogic:IsWin() == true then
+	local minigameWinCount = _ScoreData.minigameWins
+	local yutWinCount = _ScoreData.yutWins
+	
+	local finalScore = minigameWinCount + 2 * yutWinCount
+	
+	_EntityService:GetEntityByPath("/ui/최종점수UI"):SetEnable(true)
+	
+	_EntityService:GetEntityByPath("/ui/최종점수UI/UISprite/홍팀점수").TextComponent.Text = tostring(math.floor(finalScore))
+
+	_EntityService:GetEntityByPath("/ui/최종점수UI"):SetVisible(true)
+	
+	wait(4)
+	
+	_EntityService:GetEntityByPath("/ui/최종점수UI"):SetVisible(false)
+	_EntityService:GetEntityByPath("/ui/최종점수UI"):SetEnable(false)
+	
+	_EntityService:GetEntityByPath("/ui/윷놀이맵EndGameUI"):SetEnable(true)
+	_EntityService:GetEntityByPath("/ui/윷놀이맵EndGameUI"):SetVisible(true)
+	
+
+	
+	_YutMainLogic:ClearGame()
+else
+	_YutMainLogic.canPushThrowButton = true
+end
+
+-- 게임 끝났는지 확인
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

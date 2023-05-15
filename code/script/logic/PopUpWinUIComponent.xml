@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="004d5ab1-c6ac-4b58-96eb-2efa68e8f0b5" Language="Lua" Name="PopUpWinUIComponent" Type="Component" Source="None" ModifyTime="2022-08-25T00:33:54.2536518+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ServerOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local jegiPath = _EntityService:GetEntityByPath("/maps/Jegi/Jegi")
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleButtonClickEvent" EventName="ButtonClickEvent" Target="self" Scope="Server">
+      <Code><![CDATA[
+-- Parameters
+local Entity = event.Entity
+
+local jegiPath = _EntityService:GetEntityByPath("/maps/Jegi/Jegi")
+jegiPath.RigidbodyComponent.Enable = true
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

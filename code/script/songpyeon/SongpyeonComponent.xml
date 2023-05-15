@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="c0762cc8-46a1-4988-869e-8e58e6b544ea" Language="Lua" Name="SongpyeonComponent" Type="Component" Source="None" ModifyTime="2022-08-26T00:41:45.0571064+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods>
+    <CodeBlockMethod Name="hitDong" ExecSpace="Server">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="TriggerBodyEntity" Type="Entity" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+TriggerBodyEntity.HitComponent:OnHit(self.Entity, 0, false, "송편 먹음", 1)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="deleteDong" ExecSpace="Server">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments />
+      <Code><![CDATA[
+self.Entity:Destroy()
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleTriggerEnterEvent" EventName="TriggerEnterEvent" Target="self" Scope="Client">
+      <Code><![CDATA[
+-- Parameters
+local TriggerBodyEntity = event.TriggerBodyEntity
+--------------------------------------------------------
+--if TriggerBodyEntity.StateComponent.CurrentStateName ~= "DEAD" then
+	--self:hitDong(TriggerBodyEntity)
+	--self:deleteDong()
+--end
+local PopupWinUI = _EntityService:GetEntityByPath("/ui/WinUI")
+local HideEatSongpyeonUI = _EntityService:GetEntityByPath("/ui/EatSongpyeonUI")
+
+if TriggerBodyEntity.StateComponent.CurrentStateName ~= "DEAD" then
+	self:hitDong(TriggerBodyEntity)
+	for key, value in pairs(_UserService.UserEntities) do
+		value.ScoreComponent.score = value.ScoreComponent.score + 1
+		--winUI 띄우기
+		if value.ScoreComponent.score == 3 then
+			PopupWinUI:SetEnable(true)
+			_ScoreData.minigameWins = _ScoreData.minigameWins + 1
+			_EntityService:GetEntityByPath("/ui/점수판 UI/UIText_2").TextComponent.Text = tostring(math.floor(_ScoreData.yutWins * 2 + _ScoreData.minigameWins))
+			HideEatSongpyeonUI:SetEnable(false)
+			_UserService.LocalPlayer.PlayerComponent.Hp = 1000000
+		end
+	end
+	self:deleteDong()
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleFootholdEnterEvent" EventName="FootholdEnterEvent" Target="self" Scope="Client">
+      <Code><![CDATA[
+-- Parameters
+local Entity = event.Entity
+local Foothold = event.Foothold
+--------------------------------------------------------
+self:deleteDong()
+
+--for key, value in pairs(_UserService.UserEntities) do
+--	if value.StateComponent.CurrentStateName ~= "DEAD" then
+--		if value.TransformComponent.Position.y > -1 then
+--			value.ScoreComponent.score = value.ScoreComponent.score + 1
+--		end
+--	end
+--end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

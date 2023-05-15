@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="9a12982e-4d2b-4253-9ceb-aac9edf4dfb6" Language="Lua" Name="ScoreData" Type="Logic" Source="None" ModifyTime="2022-08-24T17:59:17.8156233+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="minigameWins" Type="number" DefaultValue="0" SyncDirection="All" />
+    <CodeBlockProperty Name="yutWins" Type="number" DefaultValue="0" SyncDirection="All" />
+  </Properties>
+  <Methods />
+  <EntityEventHandlers />
+</CodeBlockFile>

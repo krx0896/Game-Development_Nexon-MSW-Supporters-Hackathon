@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="5e27825d-2d55-4033-8519-fc72e6371c6c" Language="Lua" Name="ShowNevigateUI" Type="Component" Source="None" ModifyTime="2022-08-23T20:55:51.9420507+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="StartYut" Type="Entity" DefaultValue="15a425e1-592f-4b25-b7b1-6b370f956818" SyncDirection="None" />
+    <CodeBlockProperty Name="StartMiniGame" Type="Entity" DefaultValue="868eb002-6e40-45e7-9b49-cd532c1e91b3" SyncDirection="None" />
+    <CodeBlockProperty Name="EndYut" Type="Entity" DefaultValue="3d8230b9-66d7-4d49-bbaf-27aace287235" SyncDirection="None" />
+    <CodeBlockProperty Name="Mo" Type="Entity" DefaultValue="989d8080-fbad-4f8f-a74c-df928f90f13a" SyncDirection="None" />
+    <CodeBlockProperty Name="NevigateUIGroup" Type="Entity" DefaultValue="349b9009-cea5-4f95-a70f-1cc1be53b550" SyncDirection="None" />
+    <CodeBlockProperty Name="Show_StartYut" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="Show_StartMiniGame" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="Show_EndYut" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="Show_Mo" Type="boolean" DefaultValue="false" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+--메인맵 시작할때
+local StartYut= _EntityService:GetEntityByPath("/ui/윷놀이맵NevigateUI")
+wait(0.4)
+self.StartYut.TextComponent.Text = "윷놀이 게임을 시작합니다. 윷을 던져주세요!"
+StartYut:SetEnable(true)
+wait(4)
+StartYut:SetEnable(false)
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>
